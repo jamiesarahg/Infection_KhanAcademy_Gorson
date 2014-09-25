@@ -1,6 +1,7 @@
 #Khan Academy Infection Problem
 
 class User:
+	#Class to define each user
 	def __init__(self, username):
 		self.username = username
 		self.infected = False
@@ -8,7 +9,6 @@ class User:
 		self.students = []
 		population[self] = 1
 
-	
 	def infectSelf(self):
 		#infects this user 
 		self.infected = True
@@ -63,7 +63,9 @@ def spread_infection(userfrom, userto):
 			spread_infection(userto, student)
 
 
+
 def limited_infection(user, number):
+	# infects the input user and all of their students and then continues to infect until  close to the input number of people infected
 	print count
 	spread_limited_infection(user)
 
@@ -75,20 +77,29 @@ def limited_infection(user, number):
 			if number = 0:
 				return False
 		spread_limited_infection(user2)
+
 def pick_coach(number):
+	# picks the next coach to be infected if more people need to be infected
 	for coach, remaining in population.iteritems():
 		if remaining == number-count:
 			return coach
 	return False
+
 def spread_limited_infection(user):
+	# function that infects input user and all of their students.
 	user.infectSelf()
 	for student in user.students:
 		student.infectSelf()
-		print 'hi'
+
 
 def printPopulation():
+	#prints population statistics 
+	#item[0].username is the username of the discussed user
+	#item[1] is how many people would be infected if chosen to spread limited infection to
 	for item in population.iteritems():
 		print item[0].username, item[1]
+
+
 if __name__ == "__main__":
 	global population
 	global count
