@@ -1,0 +1,17 @@
+import globals
+from main import User
+userA = User('userA')
+userB = User('userB')
+userC = User('userC')
+userD = User('userD')
+userE = User('userE')
+userF = User('userF')
+userG = User('userG')
+userH = User('userH')
+userI = User('userI')
+userA.assignStudents(userB)
+userB.assignStudents(userC)
+userE.assignStudents(userC)
+userI.assignStudents(userF)
+userG.assignStudents(userH)
+userG.assignStudents(userI)
