@@ -1,5 +1,6 @@
 #Khan Academy Infection Problem
-
+import globals
+globals.population = {}
 class User:
 	#Class to define each user
 	def __init__(self, username):
@@ -7,34 +8,34 @@ class User:
 		self.infected = False
 		self.coaches = []
 		self.students = []
-		population[self] = 1
+		globals.population[self] = 1
 
 	def infectSelf(self):
 		#infects this user 
 		self.infected = True
-		population[self]-=1
-		global count
-		count +=1
-		print count
+		globals.population[self]-=1
 		for coach in self.coaches:
-			population[coach]-=1
+			globals.population[coach]-=1
+
 	def assignCoach(self, user):
 		#assigns the input user as its coach and self as a student of the input user
 		self.coaches.append(user)
 		user.students.append(self)
-		population[user]+=1
+		globals.population[user]+=1
 
 	def assignStudents(self,user):
 		# assigns the input user as a student and self as a coach of the input user
 		self.students.append(user)
 		user.coaches.append(self)
-		population[self]+=1
+		globals.population[self]+=1
+
 	def printStudents(self):
 		# prints a list of the usernames of this user's students
 		out = []
 		for items in self.students:
 			out.append(items.username)
 		print self.username,' has these students: ',out
+
 	def printCoaches(self):
 		# prints a list of the usernames of this user's coaches
 		out = []
@@ -66,21 +67,24 @@ def spread_infection(userfrom, userto):
 
 def limited_infection(user, number):
 	# infects the input user and all of their students and then continues to infect until  close to the input number of people infected
-	print count
+	count = 0
+	count += globals.population[user]
 	spread_limited_infection(user)
+	
 
 	while count < number:
-		user2 = pick_coach(number)
+		user2 = pick_coach(number, count)
 		while user2 == False:
 			number -= 1
-			user2 = pick_coach(number)
-			if number = 0:
+			user2 = pick_coach(number, count)
+			if number == 0:
 				return False
+		count += globals.population[user2]
 		spread_limited_infection(user2)
 
-def pick_coach(number):
+def pick_coach(number, count):
 	# picks the next coach to be infected if more people need to be infected
-	for coach, remaining in population.iteritems():
+	for coach, remaining in globals.population.iteritems():
 		if remaining == number-count:
 			return coach
 	return False
@@ -92,47 +96,27 @@ def spread_limited_infection(user):
 		student.infectSelf()
 
 
-def printPopulation():
+def print_population():
 	#prints population statistics 
 	#item[0].username is the username of the discussed user
 	#item[1] is how many people would be infected if chosen to spread limited infection to
-	for item in population.iteritems():
+	for item in globals.population.iteritems():
 		print item[0].username, item[1]
 
+def print_infection():
+	numInfected = 0
+	for user, remaining in globals.population.iteritems():
+		print user.username, user.infected
+		if user.infected == True:
+			numInfected +=1
+	print 'Total Infected: ', numInfected
 
-if __name__ == "__main__":
-	global population
-	global count
-	count = 0
-	population = {}
-	userA = User('userA')
-	userB = User('userB')
-	userC = User('userC')
-	userD = User('userD')
-	userE = User('userE')
-	userF = User('userF')
-	userG = User('userG')
-	userH = User('userH')
-	userI = User('userI')
-	userA.assignStudents(userB)
-	userB.assignStudents(userC)
-	userB.assignStudents(userD)
-	userE.assignStudents(userF)
-	userG.assignStudents(userH)
-	userG.assignStudents(userI)
+
+# if __name__ == "__main__":
+
 	
-	limited_infection(userB, 5)
-	printPopulation()
-	print userA.infected, 'userA'
-	print userB.infected, 'userB'
-	print userC.infected, 'userC'
-	print userD.infected, 'userD'
-	print userE.infected, 'userE'
-	print userF.infected, 'userF'
-	print userG.infected, 'userG'
-	print userH.infected, 'userH'
-	print userI.infected, 'userI'
-
-
-
-
+# 	import people
+# 	limited_infection(people.userA, 5)
+	
+	
+	
