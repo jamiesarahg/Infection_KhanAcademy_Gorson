@@ -65,19 +65,20 @@ def spread_infection(userfrom, userto):
 
 
 
-def limited_infection(user, number):
+def limited_infection(user, inputNum):
 	# infects the input user and all of their students and then continues to infect until  close to the input number of people infected
 	count = 0
 	count += globals.population[user]
 	spread_limited_infection(user)
 	
 
-	while count < number:
-		user2 = pick_coach(number, count)
+	while count < inputNum:
+		user2 = pick_coach(inputNum, count)
+		edit_inputNum = inputNum
 		while user2 == False:
-			number -= 1
-			user2 = pick_coach(number, count)
-			if number == 0:
+			edit_inputNum -= 1
+			user2 = pick_coach(edit_inputNum, count)
+			if edit_inputNum == 0:
 				return False
 		count += globals.population[user2]
 		spread_limited_infection(user2)
@@ -110,13 +111,3 @@ def print_infection():
 		if user.infected == True:
 			numInfected +=1
 	print 'Total Infected: ', numInfected
-
-
-# if __name__ == "__main__":
-
-	
-# 	import people
-# 	limited_infection(people.userA, 5)
-	
-	
-	
